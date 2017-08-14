@@ -962,7 +962,7 @@ def wait_for_cluster_state(conn, opts, cluster_instances, cluster_state):
     num_attempts = 0
 
     while True:
-        time.sleep(5 * num_attempts)  # seconds
+        time.sleep(5)  # seconds
 
         for i in cluster_instances:
             i.update()
@@ -975,9 +975,9 @@ def wait_for_cluster_state(conn, opts, cluster_instances, cluster_state):
 
         if cluster_state == 'ssh-ready':
             if all(i.state == 'running' for i in cluster_instances) and \
-               all(s.system_status.status == 'ok' for s in statuses) and \
-               all(s.instance_status.status == 'ok' for s in statuses) and \
                is_cluster_ssh_available(cluster_instances, opts):
+               # all(s.system_status.status == 'ok' for s in statuses) and \
+               # all(s.instance_status.status == 'ok' for s in statuses) and \
                 break
         else:
             if all(i.state == cluster_state for i in cluster_instances):
